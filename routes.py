@@ -8,6 +8,13 @@ from flask import redirect, url_for
 from flask import session
 from gemini_service import analyze_tarot
 from sqlalchemy import text
+from reportlab.platypus import SimpleDocTemplate, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+from flask import send_file
+import os
+from datetime import datetime
+from reportlab.platypus import Image
+
 
 
 @app.route("/")
@@ -152,6 +159,11 @@ Keep each answer positive and within 2-3 lines.
 
     prediction = analyze_palm(prompt, image_path)
 
+    session["life"] = prediction["life"]
+    session["career"] = prediction["career"]
+    session["love"] = prediction["love"]
+    session["fortune"] = prediction["fortune"]
+
     new_prediction = Prediction(
         user_email=session["user_email"],
         image_name=filename,
@@ -206,6 +218,9 @@ Keep each answer positive and within 2-3 lines.
 """
 
         prediction = analyze_tarot(prompt)
+
+        session["card"] = card
+        session["tarot_result"] = prediction
         print(Prediction.__table__.columns.keys())
         print(Prediction)
 
@@ -247,3 +262,53 @@ def delete_history(id):
     db.session.delete(prediction)
     db.session.commit()
     return redirect(url_for("history"))
+@app.route("/download_report")
+def download_report():
+
+    pdf_name = "Palmistry_Report.pdf"
+
+    doc = SimpleDocTemplate(pdf_name)
+
+    styles = getSampleStyleSheet()
+
+    story = []
+
+    story.append(Paragraph("<b>Palmistry & Tarot Intelligence Report</b>", styles["Heading2"]))
+    story.append(Paragraph("<br/>", styles["Normal"]))
+    image_path = os.path.join("static", session.get("uploaded_image"))
+
+    if os.path.exists(image_path):
+     img = Image(image_path)
+     img.drawWidth = 120
+     img.drawHeight = 120
+     story.append(img)
+
+    story.append(Paragraph("<br/>", styles["Normal"]))
+
+    story.append(Paragraph(f"<b>Name:</b> {session.get('user_name')}", styles["BodyText"]))
+
+    story.append(Paragraph(f"<b>Email:</b> {session.get('user_email')}", styles["BodyText"]))
+
+    story.append(Paragraph(f"<b>Date:</b> {datetime.now().strftime('%d-%m-%Y')}", styles["BodyText"]))
+
+    story.append(Paragraph(f"<b>Time:</b> {datetime.now().strftime('%I:%M %p')}", styles["BodyText"]))
+
+    story.append(Paragraph(f"<b>Report ID:</b> PTR-{datetime.now().strftime('%Y%m%d%H%M%S')}", styles["BodyText"]))
+
+    story.append(Paragraph("<br/>", styles["Normal"]))
+
+    story.append(Paragraph("<b>Palm Reading Results</b>", styles["Heading2"]))
+
+    story.append(Paragraph("<br/>", styles["Normal"]))
+
+    if session.get("life"):
+     story.append(Paragraph(f"<b>Life:</b> {session['life']}", styles["BodyText"]))
+     story.append(Paragraph(f"<b>Career:</b> {session['career']}", styles["BodyText"]))
+     story.append(Paragraph(f"<b>Love:</b> {session['love']}", styles["BodyText"]))
+     story.append(Paragraph(f"<b>Fortune:</b> {session['fortune']}", styles["BodyText"]))
+     doc.build(story)
+
+    return send_file(
+    pdf_name,
+    as_attachment=True
+)

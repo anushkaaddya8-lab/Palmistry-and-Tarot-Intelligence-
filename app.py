@@ -3,6 +3,7 @@ from config import Config
 from models import db
 from sqlalchemy import text
 
+
 app = Flask(__name__)
 app.config.from_object(Config)
 
@@ -15,3 +16,5 @@ if __name__ == "__main__":
         db.create_all()
     
     app.run(host="0.0.0.0", port=5000, debug=True)
+
+    
