@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tarot Reading</title>
+</head>
+<body>
+    <h1>AI Tarot Reading</h1>
+    <form method="POST" action="/tarot">
+
+<label><b>Select a Tarot Card:</b></label>
+
+<select name="card">
+
+    <option>The Fool</option>
+    <option>The Magician</option>
+    <option>The High Priestess</option>
+    <option>The Empress</option>
+    <option>The Emperor</option>
+    <option>The Lovers</option>
+    <option>The Chariot</option>
+    <option>Strength</option>
+    <option>The Hermit</option>
+    <option>Wheel of Fortune</option>
+    <option>Justice</option>
+    <option>The Star</option>
+
+</select>
+
+<br><br>
+
+<button type="submit">
+🔮 Get AI Reading
+</button>
+
+{% if prediction %}
+
+<hr>
+
+<h2>✨ AI Tarot Prediction</h2>
+
+<h3>🃏 Selected Card</h3>
+<p>{{ selected_card }}</p>
+
+<pre style="
+white-space: pre-wrap;
+font-size:16px;
+font-family:Arial;
+background:#f5f5f5;
+padding:20px;
+border-radius:10px;
+">
+{{ prediction }}
+</pre>
+
+{% endif %}
+
+
+    <a href="/profile">Back to Profile</a>
+</body>
+</html>

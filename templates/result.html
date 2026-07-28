@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Palm Analysis Result</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"> 
+</head>
+<body>
+    <div class="container">
+
+    <h1>
+    <i class="fa-solid fa-hand-sparkles"></i>
+    AI Palmistry & Tarot Intelligence Platform
+</h1>
+<p class="subtitle">
+AI Powered Palm Reading System
+</p>
+
+    <img src="{{ url_for('static', filename=filename) }}" width="300">
+
+    <h2>AI Palm Analysis (Demo)</h2>
+    <div class="success-box">
+    {{ message }}
+</div>
+
+    <p><b>Life Line:</b> Detected</p>
+    <p><b>Heart Line:</b> Detected</p>
+    <p><b>Head Line:</b> Detected</p>
+    <p><b>Analysis Time:</b> 1.82 Seconds</p>
+
+    <div class="mt-4">
+    <h6>AI Analysis Progress</h6>
+
+    <div class="progress" style="height:25px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+             role="progressbar"
+             style="width:98%;">
+            98%
+        </div>
+    </div>
+</div>
+
+<br>
+
+</div>
+
+<br>
+
+<div class="alert alert-success mt-3">
+    <h5>📊 Palm Quality Score</h5>
+    <p><b>Image Quality:</b> Excellent ⭐⭐⭐⭐⭐</p>
+    <p><b>Detection Accuracy:</b> 98.4%</p>
+    <p><b>Palm Visibility:</b> Very Clear</p>
+</div>
+
+<div class="text-center my-4">
+    <h2 class="fw-bold text-dark">
+        🔮 AI Prediction
+    </h2>
+
+    <span class="badge bg-success fs-6">
+        AI Confidence: 98.4%
+    </span>
+</div>
+
+<div class="card shadow-lg rounded-4 mb-4 border-0">
+    <h3>❤️ Life</h3>
+    <p>{{ prediction.life }}</p>
+</div>
+
+<div class="card shadow-lg rounded-4 mb-4 border-0">
+    <h3>💼 Career</h3>
+    <p>{{ prediction.career }}</p>
+</div>
+
+<div class="card shadow-lg rounded-4 mb-4 border-0">
+    <h3>💕 Love</h3>
+    <p>{{ prediction.love }}</p>
+</div>
+
+<div class="card shadow-lg rounded-4 mb-4 border-0">
+    <h3>💰 Fortune</h3>
+    <p>{{ prediction.fortune }}</p>
+</div>
+<a href="/report" class="btn btn-success mb-4">
+    📄 View Report
+</a>
+<div class="card shadow-lg rounded-4 mt-4 border-0 p-4">
+
+<h3>
+🤖 AI Recommendation
+</h3>
+
+<div class="alert alert-primary">
+
+<b>Suggested Action:</b>
+
+<ul class="mt-3">
+<li>🌱 Continue improving your skills every day.</li>
+<li>📚 Focus on learning new technologies.</li>
+<li>💼 A good career opportunity may arrive soon.</li>
+<li>❤️ Maintain a healthy work-life balance.</li>
+<li>💰 Save money and invest wisely.</li>
+</ul>
+
+</div>
+
+</div>
+
+    <div class="text-center mt-4 mb-3">
+    <a href="/profile" class="btn btn-primary btn-lg">
+        <i class="fas fa-rotate-right"></i> Analyze Another Palm
+    </a>
+</div>
+
+</div>
+</body>
+</html>
