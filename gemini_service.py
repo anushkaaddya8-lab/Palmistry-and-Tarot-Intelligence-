@@ -20,7 +20,7 @@ def analyze_palm(prompt, image_path=None):
     text = response.text
     text = text.replace("**", "")
 
-    sections = ["Life", "Career", "Love", "Fortune"]
+    sections = ["Life", "Career", "Love", "Fortune","Personality","Recommendation","Life Trend"]
     result = {}
 
     for i, section in enumerate(sections):

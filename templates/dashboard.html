@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>AI Personality Dashboard</h2>
+    <hr>
+
+    <div class="card p-3 mb-3">
+        <h4>Welcome, {{ session['name'] }}</h4>
+        <p>Email : {{ session['user_email'] }}</p>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="card p-3 mb-3">
+                <h5>Personality</h5>
+                <p>{{ personality }}</p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card p-3 mb-3">
+                <h5>Recommendation</h5>
+                <p>{{ recommendation }}</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card p-3">
+
+        <h4>Life Trends</h4>
+
+        <ul>
+
+            <li>Career : {{ career }}</li>
+
+            <li>Love : {{ love }}</li>
+
+            <li>Health : {{ health }}</li>
+
+            <li>Wealth : {{ wealth }}</li>
+
+        </ul>
+
+    </div>
+
+</div>
+
+{% endblock %}

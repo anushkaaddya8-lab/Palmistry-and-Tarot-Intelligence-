@@ -91,11 +91,14 @@ def register():
     return render_template("register.html")
 @app.route("/profile")
 def profile():
-    return render_template(
-        "profile.html",
-        name=session.get("user_name"),
-        email=session.get("user_email")
-    )
+     return render_template(
+    "profile.html",
+    name=session.get("user_name"),
+    email=session.get("user_email"),
+    personality=session.get("personality", "Please analyze your palm first."),
+    recommendation=session.get("recommendation", "Please analyze your palm first."),
+    trend=session.get("trend", "Please analyze your palm first.")
+)
 @app.route("/logout")
 def logout():
     session.clear()
@@ -153,8 +156,11 @@ Life:
 Career:
 Love:
 Fortune:
+Personality:
+Recommendation:
+Life Trend:
 
-Keep each answer positive and within 2-3 lines.
+Keep each section concise (2-3 lines),positive,and return the output exactly in the format above without changing the headings.
 """
 
     prediction = analyze_palm(prompt, image_path)
@@ -163,10 +169,14 @@ Keep each answer positive and within 2-3 lines.
     session["career"] = prediction["career"]
     session["love"] = prediction["love"]
     session["fortune"] = prediction["fortune"]
+    session["personality"] = prediction["personality"]
+    session["recommendation"] = prediction["recommendation"]
+    session["trend"] = prediction["life trend"]
 
     new_prediction = Prediction(
         user_email=session["user_email"],
         image_name=filename,
+        prediction_type="Palm",
         life=prediction["life"],
         career=prediction["career"],
         love=prediction["love"],
@@ -312,3 +322,22 @@ def download_report():
     pdf_name,
     as_attachment=True
 )
+@app.route("/dashboard")
+def dashboard():
+
+    if "user_email" not in session:
+        return redirect(url_for("login"))
+
+    personality = "Confident, Intelligent and Practical"
+
+    recommendation = "Focus on continuous learning and maintain emotional balance."
+
+    return render_template(
+        "dashboard.html",
+        personality=personality,
+        recommendation=recommendation,
+        career="Excellent",
+        love="Good",
+        health="Very Good",
+        wealth="Growing"
+    )
