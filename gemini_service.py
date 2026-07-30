@@ -2,8 +2,7 @@ from google import genai
 from PIL import Image 
 
 client = genai.Client(
-    api_key=""
-)
+    api_key="")
 
 def analyze_palm(prompt, image_path=None):
 
