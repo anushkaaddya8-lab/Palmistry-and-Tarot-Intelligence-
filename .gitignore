@@ -21,3 +21,20 @@ __pycache__/
 # OS files
 .DS_Store
 Thumbs.db
+
+# ML model files
+*.pt
+*.pth
+*.onnx
+
+# Dataset
+datasets/
+
+# Large dataset archive
+static/*.zip
+
+# Training outputs
+runs/
+
+# Large dataset archive
+static/*.zip

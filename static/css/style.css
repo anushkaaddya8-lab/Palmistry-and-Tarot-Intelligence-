@@ -1,175 +1,272 @@
-body{
+/* =========================
+   Global
+========================= */
+
+*{
     margin:0;
-    padding:40px;
+    padding:0;
+    box-sizing:border-box;
     font-family:Arial, Helvetica, sans-serif;
-    background:linear-gradient(135deg,#4facfe,#00f2fe);
 }
 
-.container{
-    max-width:750px;
-    margin:auto;
-    background:#fff;
-    padding:30px;
+body{
+    background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+    min-height:100vh;
+}
+
+/* =========================
+   Animated Background
+========================= */
+
+.stars{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:url("https://www.transparenttextures.com/patterns/stardust.png");
+    animation:moveStars 40s linear infinite;
+    z-index:-1;
+}
+
+@keyframes moveStars{
+    from{
+        background-position:0 0;
+    }
+    to{
+        background-position:1000px 1000px;
+    }
+}
+
+/* =========================
+   Login
+========================= */
+
+.login-container{
+    width:900px;
+    margin:60px auto;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(12px);
+    display:flex;
     border-radius:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,.25);
+    overflow:hidden;
+    box-shadow:0 0 30px rgba(0,0,0,.45);
+}
+
+.left{
+    width:50%;
+    padding:40px;
     text-align:center;
+    color:white;
+    position:relative;
 }
 
-h1{
-    color:#1565c0;
-    margin-bottom:5px;
+.left h1{
+    color:gold;
+    margin-top:20px;
+    font-size:40px;
 }
 
-.subtitle{
-    color:#777;
-    margin-bottom:25px;
+.left p{
+    margin-top:15px;
+    color:#ddd;
+    font-size:18px;
 }
 
-img{
-    width:320px;
-    border-radius:15px;
-    border:5px solid #1565c0;
-    box-shadow:0 5px 20px rgba(0,0,0,.25);
-    margin-bottom:20px;
+.palm{
+    width:250px;
 }
 
-.success-box{
-    background:#d4edda;
-    color:#155724;
-    padding:15px;
+.crystal{
+    position:absolute;
+    left:100px;
+    bottom:30px;
+    width:120px;
+    animation:float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-15px);}
+    100%{transform:translateY(0);}
+}
+
+.right{
+    width:50%;
+    background:white;
+    padding:50px;
+}
+
+.right h2{
+    text-align:center;
+    margin-bottom:30px;
+    color:gold;
+    text-shadow:0 0 10px gold;
+}
+
+input{
+    width:100%;
+    padding:13px;
+    margin:10px 0;
     border-radius:10px;
-    font-size:20px;
-    font-weight:bold;
-    margin:20px 0;
-}
-
-.card{
-    background:#f8f9fa;
-    border-left:6px solid #1565c0;
-    border-radius:10px;
-    padding:15px;
-    margin:15px 0;
-    text-align:left;
-    box-shadow:0 3px 10px rgba(0,0,0,.1);
-}
-
-.card h3{
-    margin:0 0 10px;
+    border:1px solid #ccc;
+    font-size:16px;
 }
 
 button{
-    background:#1565c0;
-    color:white;
+    width:100%;
+    padding:13px;
     border:none;
-    padding:12px 28px;
-    border-radius:8px;
+    border-radius:10px;
+    background:#6a0dad;
+    color:white;
     font-size:18px;
     cursor:pointer;
-    margin-top:20px;
-}
-
-button:hover{
-    background:#0d47a1;
-}
-
-.back-btn{
-    display:inline-block;
-    margin-top:20px;
-    padding:12px 25px;
-    background:#28a745;
-    color:white;
-    text-decoration:none;
-    border-radius:8px;
-    font-weight:bold;
-}
-
-.back-btn:hover{
-    background:#218838;
-}
-h1 i{
-    color:#ff9800;
-    margin-right:10px;
-}
-
-h1{
-    font-size:36px;
-    font-weight:bold;
-}
-body{
-    background: linear-gradient(135deg,#6dd5ed,#2193b0);
-    min-height:100vh;
-}
-
-.card{
-    background:white;
-    border-radius:25px;
-}
-body{
-    background: linear-gradient(135deg,#141E30,#243B55);
-    min-height:100vh;
-}
-
-.card{
-    border:none;
-    border-radius:20px;
-    box-shadow:0 15px 35px rgba(0,0,0,0.25);
-}
-
-.navbar{
-    border-bottom:2px solid #00d4ff;
-}
-
-.btn{
-    border-radius:12px;
     transition:.3s;
 }
 
-.btn:hover{
-    transform:scale(1.05);
-}
-body{
-    padding-top: 30px;
-}
-.card{
-    transition:0.4s;
+button:hover{
+    background:gold;
+    color:black;
+    transform:scale(1.03);
+    box-shadow:0 0 20px #7b2cff;
 }
 
-.card:hover{
-    transform:translateY(-8px);
-    box-shadow:0 15px 35px rgba(0,0,0,.25)!important;
-}
-body{
-    background: linear-gradient(135deg,#0f172a,#1e3a8a,#38bdf8);
-}
-
-.container{
-    background:white;
-    border-radius:20px;
-    padding:30px;
-}
-.card{
-    transition:0.4s;
-    border:none;
-    border-radius:18px;
-}
-
-.card:hover{
-    transform:translateY(-8px);
-    box-shadow:0 15px 35px rgba(0,0,0,.25);
-}
-
-.card h3{
+a{
+    text-decoration:none;
+    color:#6a0dad;
     font-weight:bold;
 }
 
-body{
-    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+/* =========================
+   Dashboard Banner
+========================= */
+
+.hero-banner{
+    background:linear-gradient(135deg,#4b0082,#0f3460);
+    color:white;
+    text-align:center;
+    padding:35px;
+    border-radius:20px;
+    margin:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,.4);
 }
 
-.container{
+.hero-banner h1{
+    font-size:38px;
+    color:gold;
+}
+
+.hero-banner p{
+    margin-top:10px;
+    font-size:18px;
+}
+
+/* =========================
+   AI Prediction Heading
+========================= */
+
+.analysis-title{
+    text-align:center;
+    color:white;
+    font-size:42px;
+    font-weight:bold;
+    margin:40px 0;
+    text-shadow:0 0 15px cyan;
+}
+
+/* =========================
+   Prediction Cards
+========================= */
+
+.prediction-container{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:25px;
+    margin:30px;
+}
+
+.prediction-card{
+    width:300px;
+    min-height:430px;
     background:white;
     border-radius:20px;
+    padding:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,.35);
+    transition:.3s;
+}
+
+.prediction-card:hover{
+    transform:translateY(-8px);
+}
+
+.prediction-card h3{
+    text-align:center;
+    color:#4b0082;
+    margin-bottom:15px;
+    font-size:28px;
+}
+
+.prediction-card p{
+    color:#444;
+    line-height:1.8;
+    text-align:justify;
+    font-size:17px;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media(max-width:900px){
+
+.login-container{
+    width:95%;
+    flex-direction:column;
+}
+
+.left,
+.right{
+    width:100%;
+}
+
+.left{
     padding:30px;
-    margin-top:30px;
-    margin-bottom:30px;
+}
+
+.palm{
+    width:180px;
+}
+
+.crystal{
+    display:none;
+}
+
+.analysis-title{
+    font-size:30px;
+}
+
+.prediction-card{
+    width:95%;
+}
+
+.hero-banner h1{
+    font-size:28px;
+}
+
+}
+.analysis-text{
+    color:white;
+    font-size:18px;
+    font-weight:500;
+}
+
+.analysis-text strong{
+    color:gold;
+}
+h1{
+    color: gold !important;
+    text-align: center;
+    margin-top: 100px;
+    font-size: 42px;
+    text-shadow: 0 0 15px gold;
 }

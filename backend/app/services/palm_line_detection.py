@@ -1,141 +1,143 @@
+from ultralytics import YOLO
 import cv2
 import os
-import numpy as np
+from pathlib import Path
 
 
 # ==========================================
-# PALM LINE DETECTION
+# YOLO PALM LINE DETECTION
 # ==========================================
+
+# Project root
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+
+# Trained YOLO model
+MODEL_PATH = (
+    PROJECT_ROOT
+    / "runs"
+    / "detect"
+    / "train"
+    / "weights"
+    / "best.pt"
+)
+
+# Load trained model
+model = YOLO(str(MODEL_PATH))
+
 
 def detect_palm_lines(image_path, output_folder):
 
     # --------------------------------------
-    # 1. Read original image
+    # 1. Check image
     # --------------------------------------
-    image = cv2.imread(image_path)
-
-    if image is None:
+    if not os.path.exists(image_path):
         raise FileNotFoundError(
             f"Image not found: {image_path}"
         )
 
     # --------------------------------------
-    # 2. Convert to grayscale
-    # --------------------------------------
-    gray = cv2.cvtColor(
-        image,
-        cv2.COLOR_BGR2GRAY
-    )
-
-    # --------------------------------------
-    # 3. Improve contrast
-    # --------------------------------------
-    clahe = cv2.createCLAHE(
-        clipLimit=2.0,
-        tileGridSize=(8, 8)
-    )
-
-    enhanced = clahe.apply(gray)
-
-    # --------------------------------------
-    # 4. Reduce noise
-    # --------------------------------------
-    blurred = cv2.GaussianBlur(
-        enhanced,
-        (5, 5),
-        0
-    )
-
-    # --------------------------------------
-    # 5. Detect edges
-    # --------------------------------------
-    edges = cv2.Canny(
-        blurred,
-        30,
-        100
-    )
-
-    # --------------------------------------
-    # 6. Morphological closing
-    # --------------------------------------
-    kernel = cv2.getStructuringElement(
-        cv2.MORPH_ELLIPSE,
-        (3, 3)
-    )
-
-    cleaned_edges = cv2.morphologyEx(
-        edges,
-        cv2.MORPH_CLOSE,
-        kernel,
-        iterations=2
-    )
-
-    # --------------------------------------
-    # 7. Detect line segments
-    # --------------------------------------
-    lines = cv2.HoughLinesP(
-        cleaned_edges,
-        rho=1,
-        theta=np.pi / 180,
-        threshold=50,
-        minLineLength=40,
-        maxLineGap=20
-    )
-
-    # --------------------------------------
-    # 8. Create output image
-    # --------------------------------------
-    line_image = image.copy()
-
-    if lines is not None:
-
-        for line in lines:
-
-            x1, y1, x2, y2 = line[0]
-
-            cv2.line(
-                line_image,
-                (x1, y1),
-                (x2, y2),
-                (0, 0, 255),
-                2
-            )
-
-    # --------------------------------------
-    # 9. Save outputs
+    # 2. Create output folder
     # --------------------------------------
     os.makedirs(
         output_folder,
         exist_ok=True
     )
 
-    cv2.imwrite(
-        os.path.join(
-            output_folder,
-            "palm_edges.jpg"
-        ),
-        cleaned_edges
+    # --------------------------------------
+    # 3. YOLO prediction
+    # --------------------------------------
+    results = model.predict(
+        source=image_path,
+        conf=0.25,
+        imgsz=640,
+        save=False
+    )
+
+    result = results[0]
+
+    # --------------------------------------
+    # 4. Create annotated image
+    # --------------------------------------
+    annotated_image = result.plot()
+
+    output_path = os.path.join(
+        output_folder,
+        "detected_palm_lines.jpg"
     )
 
     cv2.imwrite(
-        os.path.join(
-            output_folder,
-            "detected_palm_lines.jpg"
-        ),
-        line_image
+        output_path,
+        annotated_image
     )
 
+    # --------------------------------------
+    # 5. Extract detected classes
+    # --------------------------------------
+    detections = []
+
+    if result.boxes is not None:
+
+        for box in result.boxes:
+
+            class_id = int(
+                box.cls[0]
+            )
+
+            confidence = float(
+                box.conf[0]
+            )
+
+            class_name = model.names[
+                class_id
+            ]
+
+            x1, y1, x2, y2 = map(
+                int,
+                box.xyxy[0]
+            )
+
+            detections.append({
+                "class": class_name,
+                "confidence": round(
+                    confidence,
+                    3
+                ),
+                "box": {
+                    "x1": x1,
+                    "y1": y1,
+                    "x2": x2,
+                    "y2": y2
+                }
+            })
+
+    # --------------------------------------
+    # 6. Print results
+    # --------------------------------------
     print(
         "Palm line detection completed."
     )
 
     print(
-        "Output saved to:"
+        "Detected lines:"
     )
 
+    for detection in detections:
+        print(
+            f"{detection['class']} "
+            f"({detection['confidence']})"
+        )
+
     print(
-        output_folder
+        f"Output saved to: {output_path}"
     )
+
+    # --------------------------------------
+    # 7. Return result
+    # --------------------------------------
+    return {
+        "detections": detections,
+        "output_image": output_path
+    }
 
 
 # ==========================================
@@ -145,16 +147,23 @@ def detect_palm_lines(image_path, output_folder):
 if __name__ == "__main__":
 
     image_path = (
-        r"C:\Users\Admin\Documents\AI-Palmistry-Tarot"
-        r"\datasets\palmistry\001\001_F_L_32.JPG"
+        PROJECT_ROOT
+        / "datasets"
+        / "palmistry"
+        / "001"
+        / "001_F_L_32.JPG"
     )
 
     output_folder = (
-        r"C:\Users\Admin\Documents\AI-Palmistry-Tarot"
-        r"\datasets\palmistry\processed"
+        PROJECT_ROOT
+        / "datasets"
+        / "palmistry"
+        / "processed"
     )
 
-    detect_palm_lines(
-        image_path,
-        output_folder
+    result = detect_palm_lines(
+        str(image_path),
+        str(output_folder)
     )
+
+    print(result)

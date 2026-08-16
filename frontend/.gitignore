@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# ML model files
+*.pt
+*.pth
+*.onnx
+
+# Dataset
+
+# Large dataset archive
+static/*.zip

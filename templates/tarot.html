@@ -1,60 +1,189 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Tarot Reading</title>
+    <title>AI Tarot Reading</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+    body{
+        background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+        font-family:Arial, Helvetica, sans-serif;
+        color:white;
+    }
+
+    .title{
+        text-align:center;
+        margin-top:30px;
+        margin-bottom:30px;
+    }
+
+    .cards{
+        display:grid;
+        grid-template-columns:repeat(4,1fr);
+        gap:20px;
+        width:85%;
+        margin:auto;
+        justify-items:center;
+    }
+
+    .tarot-card{
+        cursor:pointer;
+    }
+
+    .tarot-card input{
+        display:none;
+    }
+
+    .tarot-card img{
+    width:160px;
+    height:240px;
+    object-fit:cover;
+    border-radius:15px;
+    transition:.4s;
+    box-shadow:0 0 15px rgba(0,0,0,.5);
+}
+    .tarot-card img:hover{
+        transform:scale(1.08);
+        box-shadow:0 0 25px gold;
+    }
+
+    .tarot-card input:checked + img{
+        border:4px solid gold;
+        box-shadow:0 0 35px gold;
+    }
+
+    button{
+        width:300px;
+        display:block;
+        margin:40px auto;
+    }
+
+    .result{
+        width:85%;
+        margin:auto;
+        background:white;
+        color:black;
+        padding:25px;
+        border-radius:20px;
+        margin-bottom:40px;
+    }
+
+    pre{
+        white-space:pre-wrap;
+        font-size:16px;
+        font-family:Arial;
+    }
+
+    </style>
+
 </head>
+
 <body>
-    <h1>AI Tarot Reading</h1>
-    <form method="POST" action="/tarot">
 
-<label><b>Select a Tarot Card:</b></label>
+<h1 class="title">🔮 AI Tarot Reading</h1>
 
-<select name="card">
+<form method="POST">
 
-    <option>The Fool</option>
-    <option>The Magician</option>
-    <option>The High Priestess</option>
-    <option>The Empress</option>
-    <option>The Emperor</option>
-    <option>The Lovers</option>
-    <option>The Chariot</option>
-    <option>Strength</option>
-    <option>The Hermit</option>
-    <option>Wheel of Fortune</option>
-    <option>Justice</option>
-    <option>The Star</option>
+<div class="cards">
 
-</select>
+<label class="tarot-card">
+<input type="radio" name="card" value="The Fool" required>
+<img src="{{ url_for('static', filename='images/tarot/fool.jpeg') }}">
+</label>
 
-<br><br>
+<label class="tarot-card">
+<input type="radio" name="card" value="The Magician">
+<img src="{{ url_for('static', filename='images/tarot/magician.jpeg') }}">
+</label>
 
-<button type="submit">
+<label class="tarot-card">
+<input type="radio" name="card" value="The High Priestess">
+<img src="{{ url_for('static', filename='images/tarot/priestess.jpeg') }}">
+</label>
+
+<label class="tarot-card">
+<input type="radio" name="card" value="The Empress">
+<img src="{{ url_for('static', filename='images/tarot/empress.jpeg') }}">
+</label>
+
+<label class="tarot-card">
+<input type="radio" name="card" value="The Emperor">
+<img src="{{ url_for('static', filename='images/tarot/emperor.jpeg') }}">
+</label>
+
+<label class="tarot-card">
+<input type="radio" name="card" value="The Lovers">
+<img src="{{ url_for('static', filename='images/tarot/lovers.jpeg') }}">
+</label>
+
+<label class="tarot-card">
+<input type="radio" name="card" value="The Chariot">
+<img src="{{ url_for('static', filename='images/tarot/chariot.jpeg') }}">
+</label>
+
+<label class="tarot-card">
+<input type="radio" name="card" value="Strength">
+<img src="{{ url_for('static', filename='images/tarot/strength.jpeg') }}">
+</label>
+
+<label class="tarot-card">
+<input type="radio" name="card" value="The Hermit">
+<img src="{{ url_for('static', filename='images/tarot/hermit.jpeg') }}">
+</label>
+
+<label class="tarot-card">
+<input type="radio" name="card" value="Wheel of Fortune">
+<img src="{{ url_for('static', filename='images/tarot/wheel.jpeg') }}">
+</label>
+
+<label class="tarot-card">
+<input type="radio" name="card" value="Justice">
+<img src="{{ url_for('static', filename='images/tarot/justice.jpeg') }}">
+</label>
+
+<label class="tarot-card">
+<input type="radio" name="card" value="The Star">
+<img src="{{ url_for('static', filename='images/tarot/star.jpeg') }}">
+</label>
+
+</div>
+
+<button class="btn btn-warning btn-lg">
 🔮 Get AI Reading
 </button>
 
+</form>
+
 {% if prediction %}
 
-<hr>
+<div class="result">
 
 <h2>✨ AI Tarot Prediction</h2>
 
-<h3>🃏 Selected Card</h3>
-<p>{{ selected_card }}</p>
+<h4>Selected Card : {{ selected_card }}</h4>
 
-<pre style="
-white-space: pre-wrap;
-font-size:16px;
-font-family:Arial;
-background:#f5f5f5;
-padding:20px;
-border-radius:10px;
-">
-{{ prediction }}
-</pre>
+<hr>
+
+<pre>{{ prediction }}</pre>
+
+</div>
 
 {% endif %}
 
+<div class="text-center mb-5">
 
-    <a href="/profile">Back to Profile</a>
+<a href="/profile" class="btn btn-success btn-lg">
+
+⬅ Back to Profile
+
+</a>
+
+</div>
+
 </body>
+
 </html>
